@@ -1,0 +1,694 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface ProjectFact {
+  label: string;
+  value: string;
+}
+
+interface RealizedProject {
+  id: string;
+  name: string;
+  type: string;
+  description: string;
+  facts: ProjectFact[];
+  url: string;
+  urlLabel: string;
+  mockupUrl: string;
+  // Erst auf true setzen, wenn die Auftraggeberin der Darstellung und den verwendeten Inhalten zugestimmt hat.
+  consentConfirmed: boolean;
+}
+
+interface ConceptProject {
+  id: string;
+  name: string;
+  description: string;
+}
+
+const realizedProjects: RealizedProject[] = [
+  {
+    id: 'leharts',
+    name: 'Leharts',
+    type: 'Website einer Künstlerin',
+    description:
+      'Leharts ist die Website einer Künstlerin. Sie präsentiert dort ihre Bilder und informiert über ihre Ausstellungen – übersichtlich und auf dem Handy genauso gut lesbar wie am Computer.',
+    facts: [
+      { label: 'Projektart', value: 'Website ohne Onlineshop' },
+      { label: 'Für', value: 'Eine Künstlerin' },
+      { label: 'Inhalte', value: 'Bilder und Ausstellungen' },
+    ],
+    url: 'https://joshuakistler.github.io/leharts2/',
+    urlLabel: 'Leharts ansehen',
+    mockupUrl: 'joshuakistler.github.io/leharts2',
+    consentConfirmed: false,
+  },
+];
+
+// Nur echte eigene Entwürfe ohne Kundenauftrag eintragen. Sie werden automatisch als fiktiv gekennzeichnet.
+const conceptProjects: ConceptProject[] = [];
+
+const conceptLabel = 'Fiktives Konzeptprojekt – kein Kundenauftrag';
+
+for (const project of realizedProjects) {
+  if (!project.consentConfirmed) {
+    console.warn(
+      `[projekte] Zustimmung für das Referenzprojekt "${project.name}" ist noch nicht bestätigt. Vor Veröffentlichung klären.`,
+    );
+  }
+}
+---
+
+<BaseLayout
+  title="Projekte"
+  description="Projekte von KLWEB: Leharts, die Website einer Künstlerin für ihre Bilder und Ausstellungen. Realisierte Projekte und Konzeptarbeiten zeigen wir klar getrennt."
+>
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="container page-hero-content">
+      <p class="eyebrow fade-up">Projekte</p>
+      <h1 id="page-title" class="fade-up" style="--delay: 1">
+        Unsere Projekte – <span class="page-hero-accent">ehrlich gezeigt.</span>
+      </h1>
+      <p class="lead fade-up" style="--delay: 2">
+        Hier siehst du, welche Websites wir umgesetzt haben. Realisierte Projekte und Konzeptarbeiten zeigen wir
+        getrennt. So weisst du immer, was ein echter Kundenauftrag ist.
+      </p>
+      <div class="page-hero-actions fade-up" style="--delay: 3">
+        <a class="btn btn--primary btn--large" href="/kontakt">
+          Eigenes Projekt besprechen <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--secondary btn--large" href="/ablauf">So läuft ein Projekt ab</a>
+      </div>
+      <nav class="jump-nav fade-up" style="--delay: 4" aria-label="Bereiche dieser Seite">
+        <ul class="jump-list" role="list">
+          <li><a class="jump-link" href="#realisierte-projekte">Realisierte Projekte</a></li>
+          <li><a class="jump-link" href="#konzeptarbeiten">Konzeptarbeiten</a></li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <section id="realisierte-projekte" class="section realized" aria-labelledby="realized-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Kundenprojekte</p>
+        <h2 id="realized-title">Realisierte Projekte</h2>
+        <p class="section-intro">
+          Diese Websites haben wir für echte Auftraggeberinnen und Auftraggeber umgesetzt. Sie sind online und du
+          kannst sie dir direkt ansehen.
+        </p>
+      </header>
+
+      <ul class="project-list" role="list">
+        {
+          realizedProjects.map((project) => (
+            <li>
+              <article class="project" aria-labelledby={`${project.id}-title`}>
+                <div class="project-content">
+                  <p class="badge badge--realized">Realisiertes Projekt</p>
+                  <h3 id={`${project.id}-title`} class="project-title">
+                    {project.name}
+                  </h3>
+                  <p class="project-type">{project.type}</p>
+                  <p class="project-text">{project.description}</p>
+
+                  <dl class="project-facts">
+                    {project.facts.map((fact) => (
+                      <div class="project-fact">
+                        <dt>{fact.label}</dt>
+                        <dd>{fact.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+
+                  {!project.consentConfirmed && (
+                    <p class="todo-note" role="note">
+                      <strong>[[ZUSTIMMUNG {project.name.toUpperCase()} BESTÄTIGEN]]</strong> Vor Veröffentlichung
+                      ersetzen: Schriftliche Zustimmung der Auftraggeberin zur Darstellung als Referenz und zu den
+                      verwendeten Inhalten einholen, danach diesen Hinweis entfernen.
+                    </p>
+                  )}
+
+                  <div class="project-actions">
+                    <a class="btn btn--primary" href={project.url}>
+                      {project.urlLabel} <span class="visually-hidden">(externe Website)</span>
+                      <span class="btn-arrow" aria-hidden="true">↗</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div class="project-visual" aria-hidden="true">
+                  <div class="browser">
+                    <div class="browser-bar">
+                      <span class="browser-dots">
+                        <span />
+                        <span />
+                        <span />
+                      </span>
+                      <span class="browser-url">{project.mockupUrl}</span>
+                    </div>
+                    <div class="browser-body">
+                      <span class="browser-title">{project.name}</span>
+                      <span class="browser-line" />
+                      <span class="browser-line browser-line--short" />
+                      <span class="browser-gallery">
+                        <span />
+                        <span />
+                        <span />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="section-link">
+        <a class="text-link" href="/leistungen">Was wir für dich übernehmen <span aria-hidden="true">→</span></a>
+      </p>
+    </div>
+  </section>
+
+  <section id="konzeptarbeiten" class="section concepts" aria-labelledby="concepts-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Entwürfe ohne Auftrag</p>
+        <h2 id="concepts-title">Konzeptarbeiten</h2>
+        <p class="section-intro">
+          Konzeptarbeiten sind Entwürfe, die wir ohne Kundenauftrag gestalten. Sie zeigen, wie eine Website für eine
+          bestimmte Art von Betrieb aussehen könnte.
+        </p>
+      </header>
+
+      {
+        conceptProjects.length > 0 ? (
+          <ul class="concept-list" role="list">
+            {conceptProjects.map((concept) => (
+              <li>
+                <article class="concept" aria-labelledby={`${concept.id}-title`}>
+                  <p class="badge badge--concept">{conceptLabel}</p>
+                  <h3 id={`${concept.id}-title`} class="concept-title">
+                    {concept.name}
+                  </h3>
+                  <p>{concept.description}</p>
+                </article>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="empty-state">
+            <h3 class="empty-title">Derzeit keine Konzeptarbeiten</h3>
+            <p>
+              Im Moment zeigen wir hier noch keine Konzeptarbeiten. Kommen welche dazu, kennzeichnen wir jede direkt
+              und gut sichtbar:
+            </p>
+            <p class="badge badge--concept">{conceptLabel}</p>
+            <p>So kannst du Konzeptarbeiten jederzeit klar von realisierten Projekten unterscheiden.</p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="container">
+      <div class="cta-box">
+        <h2 id="cta-title">Bald auch deine Website?</h2>
+        <p>
+          Erzähl uns von deinem Betrieb und deinen Vorstellungen. Gemeinsam klären wir, welche Website zu dir passt
+          und was sie umfassen soll.
+        </p>
+        <a class="btn btn--light btn--large" href="/kontakt">
+          Eigenes Projekt besprechen <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Seitenkopf (entspricht leistungen.astro) */
+  .page-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--space-6) var(--space-8);
+  }
+
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    inset: -30% -15% auto auto;
+    width: min(36rem, 85vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 40% 40%,
+      color-mix(in srgb, var(--color-copper-light) 20%, transparent),
+      color-mix(in srgb, var(--color-primary) 7%, transparent) 55%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  .page-hero-content {
+    position: relative;
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .page-hero h1 {
+    max-width: 18ch;
+  }
+
+  .page-hero-accent {
+    display: block;
+    color: var(--color-primary);
+  }
+
+  .page-hero-actions {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  /* Sprungnavigation zu den beiden Bereichen */
+  .jump-nav {
+    margin-top: var(--space-3);
+  }
+
+  .jump-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .jump-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-size: var(--step--1);
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+    transition:
+      border-color var(--duration-fast) ease,
+      color var(--duration-fast) ease;
+  }
+
+  .jump-link:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary-strong);
+  }
+
+  /* Buttons (entsprechen der Startseite) */
+  .btn--large {
+    min-height: 3.25rem;
+    padding-inline: 1.6rem;
+    font-size: var(--step-0);
+  }
+
+  .btn--light {
+    --btn-bg: var(--color-bg);
+    --btn-fg: var(--color-primary-strong);
+    --btn-border: var(--color-bg);
+  }
+
+  .btn--light:hover {
+    --btn-bg: #fff;
+    --btn-border: #fff;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Abschnittsköpfe und Links */
+  .section-head {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 44rem;
+    margin-bottom: var(--space-7);
+  }
+
+  .section-intro {
+    color: var(--color-ink-muted);
+  }
+
+  .section-link {
+    margin-top: var(--space-6);
+  }
+
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.75rem;
+    font-weight: 600;
+  }
+
+  /* Kennzeichnungen */
+  .badge {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    max-width: 100%;
+    padding: 0.3rem 0.85rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: var(--step--1);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .badge::before {
+    content: '';
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .badge--realized {
+    border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+    background: var(--color-primary-soft);
+    color: var(--color-primary-strong);
+  }
+
+  .badge--concept {
+    border: 2px solid var(--color-copper);
+    background: color-mix(in srgb, var(--color-copper) 10%, var(--color-surface));
+    color: #7a3519;
+  }
+
+  /* Realisierte Projekte */
+  .realized {
+    background: var(--color-surface-alt);
+  }
+
+  .project-list {
+    display: grid;
+    gap: var(--space-6);
+    padding: 0;
+    list-style: none;
+  }
+
+  .project {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: center;
+    padding: var(--space-6);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .project-content {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .project-title {
+    font-size: var(--step-3);
+  }
+
+  .project-type {
+    margin-top: calc(-1 * var(--space-3));
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .project-text {
+    color: var(--color-ink-muted);
+  }
+
+  .project-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    border-block: 1px solid var(--color-line);
+  }
+
+  .project-fact {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .project-fact dt {
+    color: var(--color-ink-muted);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .project-fact dd {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+    margin-top: var(--space-2);
+  }
+
+  /* Sichtbarer Platzhalter: vor Veröffentlichung entfernen */
+  .todo-note {
+    padding: var(--space-4);
+    border: 2px dashed var(--color-copper);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--color-copper) 8%, var(--color-surface));
+    color: var(--color-ink);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .todo-note strong {
+    display: block;
+    margin-bottom: var(--space-1);
+    color: #7a3519;
+  }
+
+  /* Browser-Mockup (entspricht der Startseite) */
+  .browser {
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .browser-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-line);
+    background: var(--color-surface-alt);
+  }
+
+  .browser-dots {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  .browser-dots span {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--color-line);
+  }
+
+  .browser-url {
+    overflow: hidden;
+    padding: 0.15rem var(--space-3);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-ink-muted);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .browser-body {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-6);
+  }
+
+  .browser-title {
+    font-family: var(--font-serif);
+    font-size: var(--step-2);
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .browser-line {
+    height: 0.6rem;
+    border-radius: 999px;
+    background: var(--color-surface-alt);
+  }
+
+  .browser-line--short {
+    width: 60%;
+  }
+
+  .browser-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  .browser-gallery span {
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-md);
+    background: linear-gradient(160deg, var(--color-copper-light), var(--color-copper));
+  }
+
+  .browser-gallery span:nth-child(2) {
+    background: linear-gradient(160deg, #6f9a92, var(--color-primary));
+  }
+
+  .browser-gallery span:nth-child(3) {
+    background: linear-gradient(160deg, #e8c9a0, #c98f5a);
+  }
+
+  /* Konzeptarbeiten */
+  .concept-list {
+    display: grid;
+    gap: var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .concept {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border: 2px dashed color-mix(in srgb, var(--color-copper) 45%, transparent);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .concept-title {
+    font-size: var(--step-1);
+  }
+
+  .concept p:not(.badge) {
+    color: var(--color-ink-muted);
+  }
+
+  .empty-state {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 44rem;
+    padding: var(--space-6);
+    border: 2px dashed var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .empty-title {
+    font-size: var(--step-1);
+  }
+
+  .empty-state > p:not(.badge) {
+    color: var(--color-ink-muted);
+  }
+
+  /* Abschluss-CTA */
+  .cta {
+    padding-bottom: var(--space-9);
+  }
+
+  .cta-box {
+    --color-focus: #f3c9a8;
+
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    background: var(--color-primary);
+    color: #e6eeec;
+  }
+
+  .cta-box h2 {
+    color: #fff;
+    max-width: 20ch;
+  }
+
+  .cta-box .btn {
+    margin-top: var(--space-2);
+  }
+
+  /* Mobile: Buttons über die volle Breite */
+  @media (max-width: 29.99em) {
+    .page-hero .lead {
+      font-size: var(--step-0);
+    }
+
+    .project,
+    .concept,
+    .empty-state {
+      padding: var(--space-5);
+    }
+
+    .project-actions .btn,
+    .cta-box .btn {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 30em) {
+    .page-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (min-width: 40em) {
+    .concept-list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cta-box {
+      padding: var(--space-8);
+    }
+  }
+
+  @media (min-width: 56em) {
+    .page-hero {
+      padding-block: var(--space-8);
+    }
+
+    .page-hero-content {
+      gap: var(--space-5);
+    }
+
+    .project {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: var(--space-8);
+      padding: var(--space-7);
+    }
+
+    .concept-list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
