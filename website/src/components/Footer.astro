@@ -1,0 +1,132 @@
+---
+import Logo from './Logo.astro';
+import { mainNav, contactLink, legalNav } from '../data/navigation';
+
+const year = new Date().getFullYear();
+const pages = [{ href: '/', label: 'Startseite' }, ...mainNav, contactLink];
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a class="footer-logo" href="/" aria-label="KLWEB – zur Startseite">
+        <Logo variant="inverted" />
+      </a>
+      <p class="footer-claim">
+        Kistler &amp; Läubli Webauftritte. Webdesign und Websites für kleine Unternehmen in der Schweiz.
+      </p>
+      <a class="btn footer-cta" href={contactLink.href}>
+        Projekt besprechen <span class="btn-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <nav class="footer-nav" aria-labelledby="footer-pages">
+      <h2 id="footer-pages" class="footer-heading">Seiten</h2>
+      <ul role="list">
+        {pages.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav class="footer-nav" aria-labelledby="footer-legal">
+      <h2 id="footer-legal" class="footer-heading">Rechtliches</h2>
+      <ul role="list">
+        {legalNav.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>© {year} Kistler &amp; Läubli Webauftritte</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    --color-focus: #f3c9a8;
+
+    margin-top: auto;
+    padding-top: var(--space-8);
+    background: var(--color-primary-strong);
+    color: #c9d6d3;
+    font-size: var(--step--1);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .footer-logo {
+    display: inline-block;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+  }
+
+  .footer-claim {
+    margin-block: var(--space-4) var(--space-5);
+    max-width: 34ch;
+  }
+
+  .footer-cta {
+    --btn-fg: var(--color-bg);
+    --btn-border: rgb(250 248 245 / 0.35);
+  }
+
+  .footer-cta:hover {
+    --btn-bg: rgb(250 248 245 / 0.08);
+    --btn-border: var(--color-bg);
+  }
+
+  .footer-heading {
+    margin-bottom: var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-copper-light);
+  }
+
+  .footer-nav ul {
+    display: grid;
+    gap: var(--space-2);
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer-nav a {
+    color: var(--color-bg);
+    text-decoration: none;
+  }
+
+  .footer-nav a:hover {
+    color: var(--color-bg);
+    text-decoration: underline;
+  }
+
+  .footer-bottom {
+    margin-top: var(--space-8);
+    padding-block: var(--space-5);
+    border-top: 1px solid rgb(250 248 245 / 0.14);
+  }
+
+  @media (min-width: 40em) {
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 56em) {
+    .footer-grid {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+
+    .footer-brand {
+      grid-column: auto;
+    }
+  }
+</style>
