@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import { mainNav, contactLink, legalNav } from '../data/navigation';
+import { mainNav, contactLink, legalNav, withBase } from '../data/navigation';
 
 const year = new Date().getFullYear();
 const pages = [{ href: '/', label: 'Startseite' }, ...mainNav, contactLink];
@@ -9,13 +9,13 @@ const pages = [{ href: '/', label: 'Startseite' }, ...mainNav, contactLink];
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand">
-      <a class="footer-logo" href="/" aria-label="KLWEB – zur Startseite">
+      <a class="footer-logo" href={withBase('/')} aria-label="KLWEB – zur Startseite">
         <Logo variant="inverted" />
       </a>
       <p class="footer-claim">
         Kistler &amp; Läubli Webauftritte. Webdesign und Websites für kleine Unternehmen in der Schweiz.
       </p>
-      <a class="btn footer-cta" href={contactLink.href}>
+      <a class="btn footer-cta" href={withBase(contactLink.href)}>
         Projekt besprechen <span class="btn-arrow" aria-hidden="true">→</span>
       </a>
     </div>
@@ -23,14 +23,14 @@ const pages = [{ href: '/', label: 'Startseite' }, ...mainNav, contactLink];
     <nav class="footer-nav" aria-labelledby="footer-pages">
       <h2 id="footer-pages" class="footer-heading">Seiten</h2>
       <ul role="list">
-        {pages.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+        {pages.map((link) => <li><a href={withBase(link.href)}>{link.label}</a></li>)}
       </ul>
     </nav>
 
     <nav class="footer-nav" aria-labelledby="footer-legal">
       <h2 id="footer-legal" class="footer-heading">Rechtliches</h2>
       <ul role="list">
-        {legalNav.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+        {legalNav.map((link) => <li><a href={withBase(link.href)}>{link.label}</a></li>)}
       </ul>
     </nav>
   </div>

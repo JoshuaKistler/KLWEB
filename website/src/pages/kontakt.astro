@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../data/navigation';
 
 // Nur bestätigte Angaben eintragen. Öffnungszeiten sind optional: leer lassen (''), um den Eintrag auszublenden.
 const contact = {
@@ -162,7 +163,7 @@ if (contactIncomplete) {
         </p>
         <p>
           Bitte schick uns in deiner ersten Nachricht keine Passwörter oder Zugangsdaten. Wie wir mit deinen Angaben
-          umgehen, erfährst du in der <a href="/datenschutz">Datenschutzerklärung</a>.
+          umgehen, erfährst du in der <a href={withBase('/datenschutz')}>Datenschutzerklärung</a>.
         </p>
       </aside>
 
@@ -181,7 +182,7 @@ if (contactIncomplete) {
               <h3>{step.title}</h3>
               <p>{step.text}</p>
               {step.link && (
-                <a class="text-link" href={step.link.href}>
+                <a class="text-link" href={withBase(step.link.href)}>
                   {step.link.label} <span aria-hidden="true">→</span>
                 </a>
               )}
@@ -201,10 +202,10 @@ if (contactIncomplete) {
           jederzeit.
         </p>
         <div class="cta-actions">
-          <a class="btn btn--light btn--large" href="/leistungen">
+          <a class="btn btn--light btn--large" href={withBase('/leistungen')}>
             Unsere Leistungen <span class="btn-arrow" aria-hidden="true">→</span>
           </a>
-          <a class="text-link text-link--light" href="/ablauf">So läuft ein Projekt ab <span aria-hidden="true">→</span></a>
+          <a class="text-link text-link--light" href={withBase('/ablauf')}>So läuft ein Projekt ab <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </div>

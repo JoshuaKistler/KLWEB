@@ -1,13 +1,13 @@
 ---
 import Logo from './Logo.astro';
-import { mainNav, contactLink, isCurrent } from '../data/navigation';
+import { mainNav, contactLink, isCurrent, withBase } from '../data/navigation';
 
 const { pathname } = Astro.url;
 ---
 
 <header class="site-header" data-header>
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label="KLWEB – zur Startseite" aria-current={isCurrent(pathname, '/') ? 'page' : undefined}>
+    <a class="brand" href={withBase('/')} aria-label="KLWEB – zur Startseite" aria-current={isCurrent(pathname, '/') ? 'page' : undefined}>
       <Logo />
     </a>
 
@@ -21,7 +21,7 @@ const { pathname } = Astro.url;
         {
           mainNav.map((link) => (
             <li>
-              <a class="nav-link" href={link.href} aria-current={isCurrent(pathname, link.href) ? 'page' : undefined}>
+              <a class="nav-link" href={withBase(link.href)} aria-current={isCurrent(pathname, link.href) ? 'page' : undefined}>
                 {link.label}
               </a>
             </li>
@@ -30,7 +30,7 @@ const { pathname } = Astro.url;
         <li class="nav-cta">
           <a
             class="btn btn--primary"
-            href={contactLink.href}
+            href={withBase(contactLink.href)}
             aria-current={isCurrent(pathname, contactLink.href) ? 'page' : undefined}
           >
             {contactLink.label}

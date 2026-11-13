@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../data/navigation';
 
 interface ProjectFact {
   label: string;
@@ -73,10 +74,10 @@ for (const project of realizedProjects) {
         getrennt. So weisst du immer, was ein echter Kundenauftrag ist.
       </p>
       <div class="page-hero-actions fade-up" style="--delay: 3">
-        <a class="btn btn--primary btn--large" href="/kontakt">
+        <a class="btn btn--primary btn--large" href={withBase('/kontakt')}>
           Eigenes Projekt besprechen <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
-        <a class="btn btn--secondary btn--large" href="/ablauf">So läuft ein Projekt ab</a>
+        <a class="btn btn--secondary btn--large" href={withBase('/ablauf')}>So läuft ein Projekt ab</a>
       </div>
       <nav class="jump-nav fade-up" style="--delay: 4" aria-label="Bereiche dieser Seite">
         <ul class="jump-list" role="list">
@@ -165,7 +166,7 @@ for (const project of realizedProjects) {
       </ul>
 
       <p class="section-link">
-        <a class="text-link" href="/leistungen">Was wir für dich übernehmen <span aria-hidden="true">→</span></a>
+        <a class="text-link" href={withBase('/leistungen')}>Was wir für dich übernehmen <span aria-hidden="true">→</span></a>
       </p>
     </div>
   </section>
@@ -219,7 +220,7 @@ for (const project of realizedProjects) {
           Erzähl uns von deinem Betrieb und deinen Vorstellungen. Gemeinsam klären wir, welche Website zu dir passt
           und was sie umfassen soll.
         </p>
-        <a class="btn btn--light btn--large" href="/kontakt">
+        <a class="btn btn--light btn--large" href={withBase('/kontakt')}>
           Eigenes Projekt besprechen <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
       </div>

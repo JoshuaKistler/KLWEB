@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../data/navigation';
 
 interface Profile {
   id: string;
@@ -82,10 +83,10 @@ if (profilesIncomplete) {
         Handwerksbetriebe.
       </p>
       <div class="page-hero-actions fade-up" style="--delay: 3">
-        <a class="btn btn--primary btn--large" href="/kontakt">
+        <a class="btn btn--primary btn--large" href={withBase('/kontakt')}>
           Lerne uns kennen <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
-        <a class="btn btn--secondary btn--large" href="/leistungen">Unsere Leistungen</a>
+        <a class="btn btn--secondary btn--large" href={withBase('/leistungen')}>Unsere Leistungen</a>
       </div>
     </div>
   </section>
@@ -108,7 +109,7 @@ if (profilesIncomplete) {
           du bist, was du anbietest und wie man dich erreicht.
         </p>
         <p>
-          <a class="text-link" href="/projekte">Unsere Projekte ansehen <span aria-hidden="true">→</span></a>
+          <a class="text-link" href={withBase('/projekte')}>Unsere Projekte ansehen <span aria-hidden="true">→</span></a>
         </p>
       </div>
 
@@ -157,7 +158,7 @@ if (profilesIncomplete) {
               </span>
               <h3>{item.title}</h3>
               <p>{item.text}</p>
-              <a class="text-link card-link" href={item.link.href}>
+              <a class="text-link card-link" href={withBase(item.link.href)}>
                 {item.link.label} <span aria-hidden="true">→</span>
               </a>
             </li>
@@ -195,7 +196,7 @@ if (profilesIncomplete) {
                 {profile.photo ? (
                   <img
                     class="profile-photo"
-                    src={profile.photo.src}
+                    src={withBase(profile.photo.src)}
                     alt={profile.photo.alt}
                     width={profile.photo.width}
                     height={profile.photo.height}
@@ -230,7 +231,7 @@ if (profilesIncomplete) {
           Du möchtest wissen, ob wir zu dir und deinem Betrieb passen? Erzähl uns von deinem Vorhaben. Im ersten
           Gespräch klären wir gemeinsam, was deine Website braucht.
         </p>
-        <a class="btn btn--light btn--large" href="/kontakt">
+        <a class="btn btn--light btn--large" href={withBase('/kontakt')}>
           Projekt anfragen <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
       </div>
