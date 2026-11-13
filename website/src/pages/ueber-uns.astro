@@ -1,0 +1,594 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Profile {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  // Erst eintragen, wenn ein freigegebenes Foto vorliegt (Datei in public/ ablegen).
+  photo?: { src: string; alt: string; width: number; height: number };
+}
+
+// Nur Angaben eintragen, die von der jeweiligen Person bestätigt und freigegeben sind.
+const profiles: Profile[] = [
+  {
+    id: 'profil-1',
+    name: '[[VORNAME]] [[NACHNAME]]',
+    role: '[[ROLLE]]',
+    bio: '[[KURZBIO]]',
+  },
+  {
+    id: 'profil-2',
+    name: '[[VORNAME]] [[NACHNAME]]',
+    role: '[[ROLLE]]',
+    bio: '[[KURZBIO]]',
+  },
+];
+
+const focus = [
+  'Websites für lokale Unternehmen in der Schweiz',
+  'Webdesign und Entwicklung aus einer Hand',
+  'Technische Betreuung im vereinbarten Umfang',
+  'Ohne Onlineshop, Bestell- oder Bezahlfunktion',
+];
+
+const values = [
+  {
+    title: 'Verständliche Zusammenarbeit',
+    text: 'Wir erklären Technik ohne Fachchinesisch und halten dich in jedem Schritt auf dem Laufenden. Die Entscheidungen triffst du – wir liefern dir die Grundlagen dafür.',
+    link: { href: '/ablauf', label: 'So läuft ein Projekt ab' },
+    icon: 'talk',
+  },
+  {
+    title: 'Erschwingliche Preise',
+    text: 'Auch kleine Betriebe sollen sich eine gute Website leisten können. Was deine Website kostet, besprechen wir vor dem Start offen mit dir.',
+    link: { href: '/leistungen', label: 'Was wir für dich übernehmen' },
+    icon: 'price',
+  },
+  {
+    title: 'Betreuung im vereinbarten Umfang',
+    text: 'Auch nach dem Launch sind wir für deine Website da – in dem Umfang, den wir gemeinsam festlegen. So weisst du jederzeit, was dazugehört.',
+    link: { href: '/ablauf#betreuung', label: 'Mehr zur Betreuung' },
+    icon: 'care',
+  },
+];
+
+const hasPlaceholder = (profile: Profile) =>
+  [profile.name, profile.role, profile.bio].some((value) => value.includes('[[')) || !profile.photo;
+
+const profilesIncomplete = profiles.some(hasPlaceholder);
+
+if (profilesIncomplete) {
+  console.warn(
+    '[ueber-uns] Persönliche Angaben (Namen, Rollen, Kurzbios, Fotos) sind noch Platzhalter. Vor Veröffentlichung ersetzen.',
+  );
+}
+---
+
+<BaseLayout
+  title="Über uns"
+  description="Über KLWEB – Kistler & Läubli Webauftritte: ein kleines Angebot für Webdesign und Websites für lokale Unternehmen in der Schweiz. Verständlich, erschwinglich und mit Betreuung im vereinbarten Umfang."
+>
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="container page-hero-content">
+      <p class="eyebrow fade-up">Über uns</p>
+      <h1 id="page-title" class="fade-up" style="--delay: 1">
+        Klein und persönlich – <span class="page-hero-accent">so arbeiten wir.</span>
+      </h1>
+      <p class="lead fade-up" style="--delay: 2">
+        Hinter Kistler &amp; Läubli Webauftritte, kurz KLWEB, steht ein kleines Angebot für Webdesign und Websites. Wir
+        gestalten Websites für lokale Unternehmen in der Schweiz – zum Beispiel für Coiffeursalons und
+        Handwerksbetriebe.
+      </p>
+      <div class="page-hero-actions fade-up" style="--delay: 3">
+        <a class="btn btn--primary btn--large" href="/kontakt">
+          Lerne uns kennen <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--secondary btn--large" href="/leistungen">Unsere Leistungen</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section intro" aria-labelledby="intro-title">
+    <div class="container split">
+      <div class="split-content">
+        <p class="eyebrow">Wer wir sind</p>
+        <h2 id="intro-title">Keine grosse Agentur – und das mit Absicht</h2>
+        <p>
+          KLWEB ist bewusst klein. Wir sind keine Agentur mit vielen Abteilungen, sondern ein überschaubares Angebot
+          für Betriebe, die eine gute Website ohne Onlineshop brauchen.
+        </p>
+        <p>
+          Für dich heisst das: Du sprichst direkt mit uns. Wir hören zu, stellen Fragen und erklären verständlich, was
+          wir vorschlagen und warum.
+        </p>
+        <p>
+          Dabei konzentrieren wir uns auf das, was kleine Unternehmen wirklich brauchen: eine Website, die zeigt, wer
+          du bist, was du anbietest und wie man dich erreicht.
+        </p>
+        <p>
+          <a class="text-link" href="/projekte">Unsere Projekte ansehen <span aria-hidden="true">→</span></a>
+        </p>
+      </div>
+
+      <div class="focus-box">
+        <h3 class="focus-title">Wofür wir da sind</h3>
+        <ul class="focus-list" role="list">
+          {focus.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section values" aria-labelledby="values-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Unsere Ausrichtung</p>
+        <h2 id="values-title">Worauf wir bei der Zusammenarbeit achten</h2>
+        <p class="section-intro">
+          Eine Website soll dir helfen und keine Sorgen machen. Darum setzen wir auf drei einfache Grundsätze.
+        </p>
+      </header>
+
+      <ul class="card-grid card-grid--3" role="list">
+        {
+          values.map((item) => (
+            <li class="card">
+              <span class="card-icon" aria-hidden="true">
+                {item.icon === 'talk' && (
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 5h16v11H9l-5 4V5Z" />
+                    <path d="M8 9h8M8 12h5" />
+                  </svg>
+                )}
+                {item.icon === 'price' && (
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12V4h8l10 10-8 8L3 12Z" />
+                    <circle cx="7.5" cy="8.5" r="1.5" />
+                  </svg>
+                )}
+                {item.icon === 'care' && (
+                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3 5 6v5c0 4.5 3 8.3 7 10 4-1.7 7-5.5 7-10V6l-7-3Z" />
+                    <path d="m9 12 2 2 4-4" />
+                  </svg>
+                )}
+              </span>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <a class="text-link card-link" href={item.link.href}>
+                {item.link.label} <span aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section people" aria-labelledby="people-title">
+    <div class="container">
+      <header class="section-head">
+        <p class="eyebrow">Die Menschen hinter KLWEB</p>
+        <h2 id="people-title">Mit wem du es zu tun hast</h2>
+        <p class="section-intro">
+          Bei uns weisst du, wer deine Website gestaltet, umsetzt und betreut.
+        </p>
+      </header>
+
+      {
+        profilesIncomplete && (
+          <p class="todo-note" role="note">
+            <strong>[[PERSÖNLICHE ANGABEN ERGÄNZEN]]</strong> Vor Veröffentlichung ersetzen: Namen, Rollen, Kurzbios und
+            Fotos nur mit Freigabe der jeweiligen Person eintragen. Anzahl der Profile prüfen. Keine Lebensläufe,
+            Qualifikationen oder Firmengeschichte erfinden.
+          </p>
+        )
+      }
+
+      <ul class="profile-grid" role="list">
+        {
+          profiles.map((profile) => (
+            <li>
+              <article class="profile" aria-labelledby={`${profile.id}-name`}>
+                {profile.photo ? (
+                  <img
+                    class="profile-photo"
+                    src={profile.photo.src}
+                    alt={profile.photo.alt}
+                    width={profile.photo.width}
+                    height={profile.photo.height}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <div class="profile-photo profile-photo--placeholder">
+                    <span>[[FOTO]]</span>
+                  </div>
+                )}
+                <div class="profile-body">
+                  <h3 id={`${profile.id}-name`} class="profile-name">
+                    {profile.name}
+                  </h3>
+                  <p class="profile-role">{profile.role}</p>
+                  <p class="profile-bio">{profile.bio}</p>
+                </div>
+              </article>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="container">
+      <div class="cta-box">
+        <h2 id="cta-title">Lerne uns kennen.</h2>
+        <p>
+          Du möchtest wissen, ob wir zu dir und deinem Betrieb passen? Erzähl uns von deinem Vorhaben. Im ersten
+          Gespräch klären wir gemeinsam, was deine Website braucht.
+        </p>
+        <a class="btn btn--light btn--large" href="/kontakt">
+          Projekt anfragen <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Seitenkopf (entspricht leistungen.astro) */
+  .page-hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--space-6) var(--space-8);
+  }
+
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    inset: -30% -15% auto auto;
+    width: min(36rem, 85vw);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 40% 40%,
+      color-mix(in srgb, var(--color-copper-light) 20%, transparent),
+      color-mix(in srgb, var(--color-primary) 7%, transparent) 55%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  .page-hero-content {
+    position: relative;
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .page-hero h1 {
+    max-width: 18ch;
+  }
+
+  .page-hero-accent {
+    display: block;
+    color: var(--color-primary);
+  }
+
+  .page-hero-actions {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  /* Buttons (entsprechen der Startseite) */
+  .btn--large {
+    min-height: 3.25rem;
+    padding-inline: 1.6rem;
+    font-size: var(--step-0);
+  }
+
+  .btn--light {
+    --btn-bg: var(--color-bg);
+    --btn-fg: var(--color-primary-strong);
+    --btn-border: var(--color-bg);
+  }
+
+  .btn--light:hover {
+    --btn-bg: #fff;
+    --btn-border: #fff;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Abschnittsköpfe und Links */
+  .section-head {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 44rem;
+    margin-bottom: var(--space-7);
+  }
+
+  .section-intro {
+    color: var(--color-ink-muted);
+  }
+
+  .text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.75rem;
+    font-weight: 600;
+  }
+
+  /* Wer wir sind */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  .split-content {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .split-content > p:not(.eyebrow) {
+    color: var(--color-ink-muted);
+  }
+
+  .focus-box {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border: 1px solid var(--color-line);
+    border-left: 4px solid var(--color-copper);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .focus-title {
+    font-size: var(--step-2);
+  }
+
+  .focus-list {
+    display: grid;
+    gap: var(--space-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .focus-list li {
+    position: relative;
+    padding-left: 2rem;
+    line-height: 1.45;
+  }
+
+  /* Dekoratives Häkchen, die Bedeutung steht in der Überschrift */
+  .focus-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.05em;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    background:
+      center / 0.75rem no-repeat
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%231e4d47' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3.5 8.5 3 3 6-7'/%3E%3C/svg%3E"),
+      var(--color-primary-soft);
+  }
+
+  /* Ausrichtung */
+  .values {
+    background: var(--color-surface-alt);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .card {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .card h3 {
+    font-size: var(--step-1);
+  }
+
+  .card p {
+    color: var(--color-ink-muted);
+  }
+
+  .card-icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: var(--space-2);
+    border-radius: var(--radius-md);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+
+  .card-link {
+    justify-self: start;
+  }
+
+  /* Profile */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .profile {
+    display: grid;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+  }
+
+  .profile-photo {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  /* Sichtbarer Platzhalter: vor Veröffentlichung durch ein freigegebenes Foto ersetzen */
+  .profile-photo--placeholder {
+    display: grid;
+    place-items: center;
+    padding: var(--space-4);
+    border-bottom: 2px dashed var(--color-copper);
+    background: color-mix(in srgb, var(--color-copper) 8%, var(--color-surface));
+    color: #7a3519;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    overflow-wrap: anywhere;
+  }
+
+  .profile-body {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    overflow-wrap: anywhere;
+  }
+
+  .profile-name {
+    font-size: var(--step-1);
+  }
+
+  .profile-role {
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-copper);
+  }
+
+  .profile-bio {
+    color: var(--color-ink-muted);
+  }
+
+  /* Sichtbarer Platzhalter: vor Veröffentlichung entfernen (entspricht projekte.astro) */
+  .todo-note {
+    margin-bottom: var(--space-6);
+    padding: var(--space-4);
+    border: 2px dashed var(--color-copper);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--color-copper) 8%, var(--color-surface));
+    color: var(--color-ink);
+    font-size: var(--step--1);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .todo-note strong {
+    display: block;
+    margin-bottom: var(--space-1);
+    color: #7a3519;
+  }
+
+  /* Abschluss-CTA */
+  .people {
+    padding-bottom: var(--space-8);
+  }
+
+  .cta {
+    padding-bottom: var(--space-9);
+  }
+
+  .cta-box {
+    --color-focus: #f3c9a8;
+
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    background: var(--color-primary);
+    color: #e6eeec;
+  }
+
+  .cta-box h2 {
+    color: #fff;
+    max-width: 20ch;
+  }
+
+  .cta-box .btn {
+    margin-top: var(--space-2);
+  }
+
+  /* Mobile: Buttons über die volle Breite */
+  @media (max-width: 29.99em) {
+    .page-hero .lead {
+      font-size: var(--step-0);
+    }
+
+    .card,
+    .focus-box,
+    .profile-body {
+      padding: var(--space-5);
+    }
+
+    .cta-box .btn {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 30em) {
+    .page-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+
+  @media (min-width: 40em) {
+    .card-grid--3,
+    .profile-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cta-box {
+      padding: var(--space-8);
+    }
+  }
+
+  @media (min-width: 56em) {
+    .page-hero {
+      padding-block: var(--space-8);
+    }
+
+    .page-hero-content {
+      gap: var(--space-5);
+    }
+
+    .card-grid--3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .split {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: var(--space-8);
+    }
+  }
+</style>
